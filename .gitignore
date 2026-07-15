@@ -1,0 +1,6 @@
+.gradle/
+.idea/
+.intellijPlatform/
+.kotlin/
+.claude/settings.local.json
+build/

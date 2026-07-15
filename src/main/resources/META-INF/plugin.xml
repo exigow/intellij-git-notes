@@ -1,0 +1,22 @@
+<idea-plugin>
+    <id>intellij-git-notes</id>
+    <name>Git Notes</name>
+    <vendor>Jakub Błach</vendor>
+    <description><![CDATA[
+        Adds support for Git notes.
+        For more information visit the <a href="https://example.com">git-notes</a> documentation.
+        ]]></description>
+    <depends>com.intellij.modules.platform</depends>
+    <depends>Git4Idea</depends>
+    <extensions defaultExtensionNs="com.intellij">
+        <vcsLogCustomColumn implementation="notes.NotesColumn"/>
+    </extensions>
+    <actions>
+        <action id="GitNotes.AddNote" class="notes.action.AddNoteAction">
+            <add-to-group group-id="Git.Log.ContextMenu" anchor="after" relative-to-action="Git.CreateNewTag"/>
+        </action>
+        <group id="GitNotes.EditNote" class="notes.action.EditNoteGroup" popup="true">
+            <add-to-group group-id="Git.Log.ContextMenu" anchor="after" relative-to-action="Git.Reword.Commit"/>
+        </group>
+    </actions>
+</idea-plugin>
