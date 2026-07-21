@@ -36,7 +36,7 @@ internal class NotesStatusLoader(private val project: Project) : VcsCommitsDataL
         commits.groupBy(CommitId::getRoot).forEach { (root: VirtualFile, rootCommits) ->
             service.requestIndex(root) { rootIndex ->
                 if (disposed) return@requestIndex
-                val result = rootCommits.associateWith { NotesStatus(rootIndex[it.hash.asString()].orEmpty()) }
+                val result = rootCommits.associateWith { NotesStatus(rootIndex[it.hash.asString()].orEmpty(), it) }
                 ApplicationManager.getApplication().invokeLater { if (!disposed) onChange(result) }
             }
         }

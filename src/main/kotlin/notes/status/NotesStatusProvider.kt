@@ -18,6 +18,6 @@ internal class NotesStatusProvider : VcsCommitExternalStatusProvider.WithColumn<
 
     override fun getPresentation(project: Project, status: NotesStatus): VcsCommitExternalStatusPresentation? {
         if (status.topics.isEmpty()) return null
-        return NotesStatusPresentation(status)
+        return NotesStatusPresentation(project, status)
     }
 }
