@@ -1,12 +1,14 @@
 package notes.status
 
+import com.intellij.openapi.actionSystem.DefaultActionGroup
+import com.intellij.openapi.actionSystem.impl.SimpleDataContext
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.ui.popup.JBPopupFactory
 import com.intellij.ui.awt.RelativePoint
 import com.intellij.vcs.log.ui.frame.VcsCommitExternalStatusPresentation
-import notes.MessageBundle
 import notes.NotesIcons
-import notes.action.editNote
+import notes.action.EditNoteAction
+import notes.action.NewNoteAction
 import java.awt.event.InputEvent
 import java.awt.event.MouseEvent
 import javax.swing.Icon
@@ -25,14 +27,19 @@ internal class NotesStatusPresentation(
 
     override fun onClick(e: InputEvent?): Boolean {
         val commitId = status.commitId ?: return false
-        status.topics.singleOrNull()?.let { topic ->
-            editNote(project, commitId, topic)
-            return true
+        val group = DefaultActionGroup().apply {
+            status.topics.forEach { add(EditNoteAction(commitId, it)) }
+            addSeparator()
+            add(NewNoteAction(commitId))
         }
-        val popup = JBPopupFactory.getInstance()
-            .createPopupChooserBuilder(status.topics)
-            .setItemChosenCallback { topic -> editNote(project, commitId, topic) }
-            .createPopup()
+        val popup = JBPopupFactory.getInstance().createActionGroupPopup(
+            null,
+            group,
+            SimpleDataContext.getProjectContext(project),
+            false,
+            null,
+            -1,
+        )
         if (e is MouseEvent) popup.show(RelativePoint(e)) else popup.showInFocusCenter()
         return true
     }
