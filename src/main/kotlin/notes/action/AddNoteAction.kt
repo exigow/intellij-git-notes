@@ -3,6 +3,7 @@ package notes.action
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.components.service
+import com.intellij.openapi.ui.MessageDialogBuilder
 import com.intellij.openapi.util.Disposer
 import notes.MessageBundle
 import notes.NotesService
@@ -20,7 +21,15 @@ class AddNoteAction : AnAction() {
         val dialog = NewNoteDialog(project, "", service.getAllTopics(commitId.root))
         dialog.show()
         Disposer.register(dialog.disposable) {
-            if (dialog.isOK) service.addNote(commitId, dialog.topic, dialog.text)
+            if (!dialog.isOK) return@register
+            val topic = dialog.topic
+            val exists = service.matchesTopics(commitId.root, commitId.hash.asString(), setOf(topic))
+            if (exists && !MessageDialogBuilder.yesNo(
+                    MessageBundle.message("notes.newNote"),
+                    MessageBundle.message("notes.topicExistsConfirm", topic),
+                ).ask(project)
+            ) return@register
+            service.addNote(commitId, topic, dialog.text, force = exists)
         }
     }
 }
