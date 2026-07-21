@@ -17,4 +17,5 @@ To read platform code, locate a symbol with `search_symbol` (with `include_exter
 
 ## Code Style
 
-* Don't add comments unless they're absolutely necessary. Don't do Javadocs.
+* No comments/Javadocs.
+* One top-level class per file, with the file named after the class.

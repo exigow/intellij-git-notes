@@ -10,7 +10,7 @@
     <depends>Git4Idea</depends>
     <resource-bundle>messageBundle</resource-bundle>
     <extensions defaultExtensionNs="com.intellij">
-        <vcsLogCustomColumn implementation="notes.NotesColumn"/>
+        <vcsLogCommitStatusProvider implementation="notes.status.NotesStatusProvider"/>
     </extensions>
     <actions>
         <action id="GitNotes.AddNote" class="notes.action.AddNoteAction">

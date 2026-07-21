@@ -31,8 +31,7 @@ internal class NotesService(
     private val indexExecutor = AppExecutorUtil.createBoundedApplicationPoolExecutor("GitNotes.Index", 1)
     private val opExecutor = AppExecutorUtil.createBoundedApplicationPoolExecutor("GitNotes.Ops", 1)
 
-    @Volatile
-    private var repaintCallback: (() -> Unit)? = null
+    private val changeListeners = ConcurrentHashMap.newKeySet<() -> Unit>()
 
     init {
         project.messageBus.connect(this).subscribe(
@@ -48,8 +47,9 @@ internal class NotesService(
         )
     }
 
-    fun setRepaintCallback(callback: () -> Unit) {
-        repaintCallback = callback
+    fun addChangeListener(parent: Disposable, listener: () -> Unit) {
+        changeListeners.add(listener)
+        com.intellij.openapi.util.Disposer.register(parent) { changeListeners.remove(listener) }
     }
 
     fun getStatus(commitId: CommitId): List<Note> {
@@ -60,6 +60,11 @@ internal class NotesService(
         }
         val topics = rootIndex[commitId.hash.asString()] ?: return emptyList()
         return topics.map { Note(it, "") }
+    }
+
+    fun requestIndex(root: VirtualFile, onReady: (Map<String, List<String>>) -> Unit) {
+        index[root.path]?.let { onReady(it); return }
+        indexExecutor.execute { onReady(index[root.path] ?: loadIndexSync(root)) }
     }
 
     fun getNotes(commitId: CommitId, onReady: ((List<Note>) -> Unit)? = null): List<Note> {
@@ -176,9 +181,9 @@ internal class NotesService(
     }
 
     private fun fireChanged() {
-        val repaint = repaintCallback
+        val listeners = changeListeners.toList()
         ApplicationManager.getApplication().invokeLater {
-            repaint?.invoke()
+            listeners.forEach { it() }
         }
     }
 
@@ -208,7 +213,7 @@ internal class NotesService(
         textCache.clear()
         textRequested.clear()
         refsCache.clear()
-        repaintCallback = null
+        changeListeners.clear()
     }
 
     private fun runGit(root: VirtualFile, vararg args: String): String? {
