@@ -18,6 +18,7 @@ import git4idea.repo.GitRepositoryManager
 import java.nio.charset.StandardCharsets
 import java.util.concurrent.ConcurrentHashMap
 
+// todo: this is getting too complex (index, caching, etc) -- deconstruct this/refactor
 @Service(Service.Level.PROJECT)
 internal class NotesService(
     private val project: Project
@@ -181,20 +182,16 @@ internal class NotesService(
         }
     }
 
-    private fun notesRefs(root: VirtualFile): List<String> =
-        refsCache.getOrPut(root.path) {
-            val output = runGit(root, "for-each-ref", "--format=%(refname)", "refs/notes") ?: return@getOrPut emptyList()
-            output.lineSequence().map { it.trim() }.filter { it.isNotEmpty() }.toList()
-        }
+    private fun notesRefs(root: VirtualFile): List<String> = refsCache.getOrPut(root.path) {
+        val output = runGit(root, "for-each-ref", "--format=%(refname)", "refs/notes") ?: return@getOrPut emptyList()
+        output.lineSequence().map { it.trim() }.filter { it.isNotEmpty() }.toList()
+    }
 
-    private fun readNotes(root: VirtualFile, hash: String): List<Note> =
-        notesRefs(root).mapNotNull { ref ->
-            val topic = ref.removePrefix("refs/notes/")
-            runGit(root, "notes", "--ref=$ref", "show", hash)
-                ?.removeSuffix("\n")
-                ?.takeIf { it.isNotEmpty() }
-                ?.let { Note(topic, it) }
-        }
+    private fun readNotes(root: VirtualFile, hash: String): List<Note> = notesRefs(root).mapNotNull { ref ->
+        val topic = ref.removePrefix("refs/notes/")
+        runGit(root, "notes", "--ref=$ref", "show", hash)?.removeSuffix("\n")?.takeIf { it.isNotEmpty() }
+            ?.let { Note(topic, it) }
+    }
 
     private fun String.affectsNotes(): Boolean {
         if (!contains("/refs/notes") && !endsWith("/packed-refs")) return false
@@ -217,9 +214,7 @@ internal class NotesService(
     private fun runGit(root: VirtualFile, vararg args: String): String? {
         val git = GitExecutableManager.getInstance().getPathToGit(project)
         LOG.warn("git ${args.joinToString(" ")}")
-        val command = GeneralCommandLine(git, *args)
-            .withWorkDirectory(root.path)
-            .withCharset(StandardCharsets.UTF_8)
+        val command = GeneralCommandLine(git, *args).withWorkDirectory(root.path).withCharset(StandardCharsets.UTF_8)
         return try {
             val output = ExecUtil.execAndGetOutput(command, 10_000)
             if (output.exitCode != 0) null else output.stdout

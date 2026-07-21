@@ -5,15 +5,15 @@ import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.components.service
 import com.intellij.openapi.util.Disposer
 import com.intellij.vcs.log.CommitId
-import notes.dialog.EditNoteDialog
 import notes.NotesService
+import notes.dialog.EditNoteDialog
 
 class EditNoteAction(
     private val commitId: CommitId,
     private val topic: String,
 ) : AnAction() {
     init {
-        templatePresentation.text = "Edit $topic"
+        templatePresentation.text = topic
     }
 
     override fun actionPerformed(e: AnActionEvent) {

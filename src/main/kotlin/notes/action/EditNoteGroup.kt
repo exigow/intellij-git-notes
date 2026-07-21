@@ -5,11 +5,12 @@ import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.components.service
 import com.intellij.util.containers.map2Array
+import notes.MessageBundle
 import notes.NotesService
 
 class EditNoteGroup : ActionGroup() {
     init {
-        templatePresentation.text = "Edit Note…"
+        templatePresentation.text = MessageBundle.message("notes.edit")
     }
 
     override fun getChildren(e: AnActionEvent?): Array<AnAction> {

@@ -8,9 +8,9 @@ import com.intellij.openapi.ui.ValidationInfo
 import com.intellij.ui.dsl.builder.AlignX
 import com.intellij.ui.dsl.builder.AlignY
 import com.intellij.ui.dsl.builder.panel
+import notes.MessageBundle
 import notes.dialog.field.NoteTextField
 import notes.dialog.field.NoteTopicField
-import javax.swing.JComponent
 
 internal class NewNoteDialog(
     project: Project,
@@ -24,11 +24,10 @@ internal class NewNoteDialog(
     val text: String get() = textArea.text
 
     init {
-        title = "New note"
-        setOKButtonText("OK")
-        setCancelButtonText("Cancel")
+        title = MessageBundle.message("notes.newNote")
+        setOKButtonText(MessageBundle.message("notes.save"))
+        setCancelButtonText(MessageBundle.message("notes.cancel"))
         init()
-
         val listener = object : DocumentListener {
             override fun documentChanged(event: DocumentEvent) = updateSaveEnabled()
         }
@@ -41,9 +40,9 @@ internal class NewNoteDialog(
         isOKActionEnabled = topic.isNotEmpty() || text.isNotEmpty()
     }
 
-    override fun getPreferredFocusedComponent(): JComponent = topicField
+    override fun getPreferredFocusedComponent() = topicField
 
-    override fun createCenterPanel(): JComponent = panel {
+    override fun createCenterPanel() = panel {
         row {
             cell(topicField).align(AlignX.FILL)
         }
@@ -52,7 +51,11 @@ internal class NewNoteDialog(
         }.resizableRow()
     }
 
-    override fun doValidateAll(): List<ValidationInfo> = buildList {
-        if (topic.isEmpty()) add(ValidationInfo("Topic must not be empty", topicField))
+    override fun doValidateAll() = buildList {
+        if (topic.isEmpty()) add(
+            ValidationInfo(
+                MessageBundle.message("notes.topicMustNotBeEmpty"), topicField
+            )
+        )
     }
 }

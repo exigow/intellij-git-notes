@@ -4,12 +4,13 @@ import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.components.service
 import com.intellij.openapi.util.Disposer
-import notes.dialog.NewNoteDialog
+import notes.MessageBundle
 import notes.NotesService
+import notes.dialog.NewNoteDialog
 
 class AddNoteAction : AnAction() {
     init {
-        templatePresentation.text = "New Note…"
+        templatePresentation.text = MessageBundle.message("notes.newNote")
     }
 
     override fun actionPerformed(e: AnActionEvent) {

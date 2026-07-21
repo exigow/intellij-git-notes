@@ -8,6 +8,7 @@
         ]]></description>
     <depends>com.intellij.modules.platform</depends>
     <depends>Git4Idea</depends>
+    <resource-bundle>messageBundle</resource-bundle>
     <extensions defaultExtensionNs="com.intellij">
         <vcsLogCustomColumn implementation="notes.NotesColumn"/>
     </extensions>
