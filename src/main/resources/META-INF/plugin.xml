@@ -3,9 +3,8 @@
     <name>Git Notes</name>
     <vendor>Jakub Błach</vendor>
     <description><![CDATA[
-        Adds support for Git notes.
-        For more information visit the <a href="https://example.com">git-notes</a> documentation.
-        ]]></description>
+        This minimal plugin adds support for <a href="https://git-scm.com/docs/git-notes">git-notes</a> in IntelliJ IDEA.
+    ]]></description>
     <depends>com.intellij.modules.platform</depends>
     <depends>Git4Idea</depends>
     <resource-bundle>messageBundle</resource-bundle>
