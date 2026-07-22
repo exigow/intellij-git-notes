@@ -1,6 +1,6 @@
 package notes
 
-import com.intellij.openapi.util.IconLoader
+import com.intellij.icons.AllIcons
 import com.intellij.ui.LayeredIcon
 import com.intellij.ui.icons.TextIcon
 import com.intellij.util.IconUtil
@@ -9,7 +9,7 @@ import javax.swing.JLabel
 import javax.swing.SwingConstants
 
 internal object NotesIcons {
-    private val NOTE: Icon = IconLoader.getIcon("/pen.svg", NotesIcons::class.java)
+    private val NOTE: Icon = AllIcons.Actions.Edit
     private val TWO: Icon by lazy { captioned("2") }
     private val THREE: Icon by lazy { captioned("3") }
     private val FOUR: Icon by lazy { captioned("4") }
