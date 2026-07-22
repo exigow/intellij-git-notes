@@ -14,8 +14,3 @@ You can use **debugger**, analyze code, modify files, run configurations, or exe
 
 The entire IntelliJ Platform sources JAR is cached and indexed by JetBrains MCP.
 To read platform code, locate a symbol with `search_symbol` (with `include_external=true`) and open the returned JAR path with `read_file`.
-
-## Code Style
-
-* No comments/Javadocs.
-* One top-level class per file, with the file named after the class.
