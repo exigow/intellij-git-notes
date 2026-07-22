@@ -11,6 +11,8 @@
     <resource-bundle>messageBundle</resource-bundle>
     <extensions defaultExtensionNs="com.intellij">
         <vcsLogCommitStatusProvider implementation="notes.status.NotesStatusProvider"/>
+        <vcsLogCustomColumn implementation="notes.email.AuthorEmailColumn"/>
+        <vcsLogCustomColumn implementation="notes.email.CommitterEmailColumn"/>
     </extensions>
     <actions>
         <action id="GitNotes.AddNote" class="notes.action.AddNoteAction">
