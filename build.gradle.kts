@@ -22,6 +22,10 @@ dependencies {
     }
 }
 
+kotlin {
+    jvmToolchain(21)
+}
+
 tasks.runIde {
     jvmArgs("-Didea.log.debug.categories=notes")
 }
