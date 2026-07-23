@@ -6,3 +6,4 @@ This minimal plugin adds support for [git-notes](https://git-scm.com/docs/git-no
 
 * `./gradlew runIde` - run IDE with installed plugin
 * `./gradlew buildPlugin` - build plugin installer (outputs `build/distributions/intellij-git-notes.zip`)
+* `./gradlew verifyPlugin` - a compatibility check against different IDE versions (takes time)
