@@ -16,9 +16,17 @@ repositories {
 dependencies {
     testImplementation("junit:junit:4.13.2")
     intellijPlatform {
-        intellijIdea("2025.3.5")
+        intellijIdea("2025.3")
         testFramework(TestFrameworkType.Platform)
         bundledPlugin("Git4Idea")
+    }
+}
+
+intellijPlatform {
+    pluginConfiguration {
+        ideaVersion {
+            sinceBuild = "253"
+        }
     }
 }
 
