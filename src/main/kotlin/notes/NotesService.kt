@@ -118,6 +118,13 @@ internal class NotesService(
     fun getAllTopics(root: VirtualFile): Set<String> =
         notesRefs(root).map { it.removePrefix("refs/notes/") }.sorted().toSet()
 
+    fun loadAllTopics(root: VirtualFile, onReady: (Set<String>) -> Unit) {
+        opExecutor.execute {
+            val topics = getAllTopics(root)
+            ApplicationManager.getApplication().invokeLater { onReady(topics) }
+        }
+    }
+
     fun matchesTopics(root: VirtualFile, hash: String, topics: Set<String>): Boolean {
         if (topics.isEmpty()) return true
         val rootIndex = index[root.path] ?: loadIndexSync(root)

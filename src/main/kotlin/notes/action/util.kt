@@ -17,18 +17,23 @@ fun AnActionEvent.getSelectedCommitId(): CommitId? =
 
 fun newNote(project: Project, commitId: CommitId) {
     val service = project.service<NotesService>()
-    val dialog = NewNoteDialog(project, "", service.getAllTopics(commitId.root))
-    dialog.show()
-    Disposer.register(dialog.disposable) {
-        if (!dialog.isOK) return@register
-        val topic = dialog.topic
-        val exists = service.matchesTopics(commitId.root, commitId.hash.asString(), setOf(topic))
-        if (exists && !MessageDialogBuilder.yesNo(
-                MessageBundle.message("notes.newNote"),
-                MessageBundle.message("notes.topicExistsConfirm", topic),
-            ).ask(project)
-        ) return@register
-        service.addNote(commitId, topic, dialog.text, force = exists)
+    service.loadAllTopics(commitId.root) { knownTopics ->
+        val dialog = NewNoteDialog(project, "", knownTopics)
+        service.loadNotes(commitId) { notes ->
+            dialog.setTopicsOnCommit(notes.map { it.topic }.toSet())
+        }
+        dialog.onOk = onOk@{
+            val topic = dialog.topic
+            val exists = service.matchesTopics(commitId.root, commitId.hash.asString(), setOf(topic))
+            if (exists && !MessageDialogBuilder.yesNo(
+                    MessageBundle.message("notes.newNote"),
+                    MessageBundle.message("notes.topicExistsConfirm", topic),
+                ).ask(project)
+            ) return@onOk false
+            service.addNote(commitId, topic, dialog.text, force = exists)
+            true
+        }
+        dialog.show()
     }
 }
 
