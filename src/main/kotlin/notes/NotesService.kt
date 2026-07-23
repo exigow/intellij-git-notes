@@ -218,7 +218,7 @@ internal class NotesService(
 
     private fun runGit(root: VirtualFile, vararg args: String): String? {
         val git = GitExecutableManager.getInstance().getPathToGit(project)
-        LOG.warn("git ${args.joinToString(" ")}")
+        LOG.info("git ${args.joinToString(" ")}")
         val command = GeneralCommandLine(git, *args).withWorkDirectory(root.path).withCharset(StandardCharsets.UTF_8)
         return try {
             val output = ExecUtil.execAndGetOutput(command, 10_000)
