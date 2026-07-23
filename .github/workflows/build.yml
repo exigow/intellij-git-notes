@@ -23,9 +23,13 @@ jobs:
       - name: Build plugin
         run: ./gradlew buildPlugin
 
+      - name: Resolve distribution name
+        id: distribution
+        run: echo "name=$(basename build/distributions/*.zip .zip)" >> "$GITHUB_OUTPUT"
+
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: plugin-distribution
+          name: ${{ steps.distribution.outputs.name }}
           path: build/distributions/*.zip
           if-no-files-found: error
