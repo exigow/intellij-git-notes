@@ -36,6 +36,10 @@ intellijPlatform {
             recommended()
         }
     }
+
+    publishing {
+        token = providers.gradleProperty("token")
+    }
 }
 
 kotlin {
