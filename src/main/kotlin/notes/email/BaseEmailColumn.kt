@@ -1,12 +1,12 @@
 package notes.email
 
-import com.intellij.openapi.util.Disposer
+import com.intellij.ui.ColoredTableCellRenderer
 import com.intellij.vcs.log.VcsCommitMetadata
 import com.intellij.vcs.log.ui.table.GraphTableModel
 import com.intellij.vcs.log.ui.table.VcsLogGraphTable
-import com.intellij.vcs.log.ui.table.VcsLogStringCellRenderer
 import com.intellij.vcs.log.ui.table.VcsLogTableIndex
 import com.intellij.vcs.log.ui.table.column.VcsLogCustomColumn
+import javax.swing.JTable
 import javax.swing.table.TableCellRenderer
 
 @Suppress("UnstableApiUsage")
@@ -22,12 +22,17 @@ internal abstract class BaseEmailColumn : VcsLogCustomColumn<String> {
 
     override fun getStubValue(model: GraphTableModel) = ""
 
-    override fun createTableCellRenderer(table: VcsLogGraphTable): TableCellRenderer {
-        val listener = Runnable { table.onColumnDataChanged(this) }
-        table.logData.miniDetailsGetter.addDetailsLoadedListener(listener)
-        Disposer.register(table) {
-            table.logData.miniDetailsGetter.removeDetailsLoadedListener(listener)
+    override fun createTableCellRenderer(table: VcsLogGraphTable): TableCellRenderer =
+        object : ColoredTableCellRenderer() {
+            override fun customizeCellRenderer(
+                table: JTable,
+                value: Any?,
+                selected: Boolean,
+                hasFocus: Boolean,
+                row: Int,
+                column: Int,
+            ) {
+                append(value?.toString().orEmpty())
+            }
         }
-        return VcsLogStringCellRenderer()
-    }
 }
