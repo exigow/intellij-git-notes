@@ -13,6 +13,5 @@ This minimal plugin adds support for [git-notes](https://git-scm.com/docs/git-no
 
 * bug: can't create new empty note (!)
 * add single good e2e test that goes through all features
-* bug: ctrl+c on commit puts internal class name into copied string (missing "pretty" toString impl?)
 * find solution for stale topics (I think they should not be present in autocompletion)
 * add "prune stale topics" action (?)
