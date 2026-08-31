@@ -10,6 +10,9 @@
     <resource-bundle>messageBundle</resource-bundle>
     <extensions defaultExtensionNs="com.intellij">
         <vcsLogCommitStatusProvider implementation="notes.status.NotesStatusProvider"/>
+        <vcsLogCommitStatusProvider implementation="notes.remerge.RemergeStatusProvider"/>
+        <postStartupActivity implementation="notes.remerge.RemergeCacheInvalidator"/>
+        <postStartupActivity implementation="notes.NotesCacheInvalidator"/>
         <vcsLogCustomColumn implementation="notes.email.AuthorEmailColumn"/>
         <vcsLogCustomColumn implementation="notes.email.CommitterEmailColumn"/>
     </extensions>
@@ -20,5 +23,8 @@
         <group id="GitNotes.EditNote" class="notes.action.EditNoteGroup" popup="true">
             <add-to-group group-id="Git.Log.ContextMenu" anchor="after" relative-to-action="Git.Reword.Commit"/>
         </group>
+        <action id="GitNotes.RemergeDiff" class="notes.remerge.RemergeDiffAction">
+            <add-to-group group-id="Git.Log.ContextMenu" anchor="after" relative-to-action="GitNotes.EditNote"/>
+        </action>
     </actions>
 </idea-plugin>

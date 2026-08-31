@@ -14,10 +14,10 @@ internal class NotesStatusProvider : VcsCommitExternalStatusProvider.WithColumn<
 
     override fun getExternalStatusColumnService() = service<NotesStatusColumnService>()
 
-    override fun getStubStatus() = NotesStatus.NONE
+    override fun getStubStatus() = NotesStatus.PENDING
 
     override fun getPresentation(project: Project, status: NotesStatus): VcsCommitExternalStatusPresentation? {
-        if (status.topics.isEmpty()) return null
+        if (status.topics != null && status.topics.isEmpty()) return null
         return NotesStatusPresentation(project, status)
     }
 }

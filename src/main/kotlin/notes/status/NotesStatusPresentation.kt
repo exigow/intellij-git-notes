@@ -6,7 +6,7 @@ import com.intellij.openapi.project.Project
 import com.intellij.openapi.ui.popup.JBPopupFactory
 import com.intellij.ui.awt.RelativePoint
 import com.intellij.vcs.log.ui.frame.VcsCommitExternalStatusPresentation
-import notes.NotesIcons
+import notes.Icons
 import notes.action.EditNoteAction
 import notes.action.NewNoteAction
 import java.awt.event.InputEvent
@@ -18,17 +18,23 @@ internal class NotesStatusPresentation(
     private val status: NotesStatus,
 ) : VcsCommitExternalStatusPresentation.Clickable {
     override val icon: Icon
-        get() = NotesIcons.forCount(status.topics.size)
+        get() = when {
+            !status.isPending -> Icons.forCount(status.topics.orEmpty().size)
+            status.phase == NotesPhase.UPDATING -> Icons.UPDATING
+            else -> Icons.SCHEDULED
+        }
 
     override val text: String
-        get() = status.topics.joinToString(", ")
+        get() = if (status.isPending) status.toString() else status.topics.orEmpty().joinToString(", ")
 
-    override fun clickEnabled(e: InputEvent?) = status.commitId != null && status.topics.isNotEmpty()
+    override fun clickEnabled(e: InputEvent?) =
+        !status.isPending && status.commitId != null && status.topics.orEmpty().isNotEmpty()
 
     override fun onClick(e: InputEvent?): Boolean {
+        if (status.isPending) return false
         val commitId = status.commitId ?: return false
         val group = DefaultActionGroup().apply {
-            status.topics.forEach { add(EditNoteAction(commitId, it)) }
+            status.topics.orEmpty().forEach { add(EditNoteAction(commitId, it)) }
             addSeparator()
             add(NewNoteAction(commitId))
         }
