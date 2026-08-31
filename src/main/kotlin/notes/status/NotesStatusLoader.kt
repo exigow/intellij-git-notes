@@ -34,7 +34,15 @@ internal class NotesStatusLoader(private val project: Project) : VcsCommitsDataL
     private fun load(commits: List<CommitId>, onChange: (Map<CommitId, NotesStatus>) -> Unit) {
         if (disposed || commits.isEmpty()) return
         commits.groupBy(CommitId::getRoot).forEach { (root: VirtualFile, rootCommits) ->
-            service.requestIndex(root) { rootIndex ->
+            val scheduled = rootCommits.associateWith { NotesStatus(commitId = it, phase = NotesPhase.SCHEDULED) }
+            ApplicationManager.getApplication().invokeLater { if (!disposed) onChange(scheduled) }
+            service.requestIndex(
+                root,
+                onUpdating = {
+                    val updating = rootCommits.associateWith { NotesStatus(commitId = it, phase = NotesPhase.UPDATING) }
+                    ApplicationManager.getApplication().invokeLater { if (!disposed) onChange(updating) }
+                },
+            ) { rootIndex ->
                 if (disposed) return@requestIndex
                 val result = rootCommits.associateWith { NotesStatus(rootIndex[it.hash.asString()].orEmpty(), it) }
                 ApplicationManager.getApplication().invokeLater { if (!disposed) onChange(result) }

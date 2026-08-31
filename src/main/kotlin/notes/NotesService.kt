@@ -62,9 +62,16 @@ internal class NotesService(
         return topics.map { Note(it, "") }
     }
 
-    fun requestIndex(root: VirtualFile, onReady: (Map<String, List<String>>) -> Unit) {
+    fun requestIndex(
+        root: VirtualFile,
+        onUpdating: () -> Unit = {},
+        onReady: (Map<String, List<String>>) -> Unit,
+    ) {
         index[root.path]?.let { onReady(it); return }
-        indexExecutor.execute { onReady(index[root.path] ?: loadIndexSync(root)) }
+        indexExecutor.execute {
+            onUpdating()
+            onReady(index[root.path] ?: loadIndexSync(root))
+        }
     }
 
     fun getNotes(commitId: CommitId, onReady: ((List<Note>) -> Unit)? = null): List<Note> {
@@ -178,7 +185,7 @@ internal class NotesService(
         return snapshot
     }
 
-    private fun invalidate() {
+    internal fun invalidate() {
         index.clear()
         indexRequested.clear()
         textCache.clear()

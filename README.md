@@ -11,7 +11,7 @@ This minimal plugin adds support for [git-notes](https://git-scm.com/docs/git-no
 
 ## TODO
 
-* bug: can't create new empty note (!)
-* add single good e2e test that goes through all features
-* find solution for stale topics (I think they should not be present in autocompletion)
-* add "prune stale topics" action (?)
+* bug: can't create new empty note
+* task: add single good e2e test that goes through all features
+* bug: autocompleted topics are getting polluted by old/stale topics -- maybe hide those options? how to identify such?
+* bug: e-mail VCS row has no "hovered" effect when mouse overlaps the row -- maybe because custom implementations?
