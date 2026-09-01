@@ -9,6 +9,12 @@ This minimal plugin adds support for [git-notes](https://git-scm.com/docs/git-no
 * `./gradlew verifyPlugin` - a compatibility check against different IDE versions (takes time)
 * `./gradlew publishPlugin -Ptoken=TOKEN` - upload new version to the JetBrains Marketplace
 
+## Screenshots
+
+![image](docs/enable-columns.png)
+
+![image](docs/edit-notes.png)
+
 ## TODO
 
 * bug: can't create new empty note
