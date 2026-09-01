@@ -1,7 +1,3 @@
-critical bug: CI artifact is broken (?).
-im getting: Fail to load plugin descriptor from file intellij-git-notes-1.0.5.zip.
-workaround: build locally.
-
 task: add e2e test.
 
 bug: topic autocomplete is getting polluted over time by old/stale topics.
