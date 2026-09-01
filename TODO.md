@@ -17,3 +17,5 @@ effect is not visible/it has to be refreshed manually (wrong!)
 
 bug: remerge-diff VCS icon toString is problematic:
 example: Add Pixel 10 Series Skins. stevenjenkins@google.com 11/3/25, 3:18 AM 3 notes Compare selected a89a6dc2 vs original 26503c02 cherry-pick (range-diff).
+
+task: "add note" and "edit note" windows need keyboard-only controls (eg alt+S should save)
