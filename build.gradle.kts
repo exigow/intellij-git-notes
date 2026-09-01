@@ -1,3 +1,4 @@
+import org.jetbrains.intellij.platform.gradle.IntelliJPlatformType
 import org.jetbrains.intellij.platform.gradle.TestFrameworkType
 import org.jetbrains.intellij.platform.gradle.extensions.intellijPlatform
 
@@ -33,7 +34,7 @@ intellijPlatform {
 
     pluginVerification {
         ides {
-            recommended()
+            create(IntelliJPlatformType.IntellijIdea, "2025.3")
         }
     }
 
