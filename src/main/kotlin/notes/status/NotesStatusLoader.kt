@@ -14,7 +14,7 @@ internal class NotesStatusLoader(private val project: Project) : VcsCommitsDataL
     @Volatile
     private var disposed = false
 
-    private var lastCommits: List<CommitId> = emptyList()
+    private val knownCommits = linkedSetOf<CommitId>()
     private var lastOnChange: ((Map<CommitId, NotesStatus>) -> Unit)? = null
 
     init {
@@ -22,13 +22,13 @@ internal class NotesStatusLoader(private val project: Project) : VcsCommitsDataL
     }
 
     override fun loadData(commits: List<CommitId>, onChange: (Map<CommitId, NotesStatus>) -> Unit) {
-        lastCommits = commits
+        knownCommits.addAll(commits)
         lastOnChange = onChange
         load(commits, onChange)
     }
 
     private fun reload() {
-        lastOnChange?.let { load(lastCommits, it) }
+        lastOnChange?.let { load(knownCommits.toList(), it) }
     }
 
     private fun load(commits: List<CommitId>, onChange: (Map<CommitId, NotesStatus>) -> Unit) {

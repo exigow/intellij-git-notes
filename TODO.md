@@ -14,9 +14,6 @@ improve this situation/find solution.
 visual bug: email VCS column has no "hovered" effect when the mouse overlaps the row.
 why?
 
-bug: note VCS icon is not updated instantly after adding new note.
-effect is not visible/it has to be refreshed manually (wrong!)
-
 bug: remerge-diff VCS icon toString is problematic:
 example: Add Pixel 10 Series Skins. stevenjenkins@google.com 11/3/25, 3:18 AM 3 notes Compare selected a89a6dc2 vs original 26503c02 cherry-pick (range-diff).
 
