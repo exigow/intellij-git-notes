@@ -7,18 +7,17 @@ import com.intellij.ui.LayeredIcon
 import com.intellij.ui.icons.TextIcon
 import com.intellij.util.IconUtil
 import com.intellij.util.ui.ColorIcon
-import icons.DvcsImplIcons
 import java.awt.Color
 import javax.swing.Icon
 import javax.swing.JLabel
 import javax.swing.SwingConstants
 
-@Suppress("UnstableApiUsage")
 object Icons {
     val UPDATING: Icon = AnimatedIcon.Default.ICONS.first()
     val SCHEDULED: Icon = IconLoader.getTransparentIcon(UPDATING, 0.3f)
-    val CLEAN: Icon = DvcsImplIcons.CherryPick
-    val DIRTY: Icon = cherryPicked(ColorIcon(8, 8, 8, 8, Color(0xF4AF3D), false, 8)) // todo fix color
+    val CHERRY_PICK: Icon = loadCherryPickIcon()
+    val CLEAN: Icon = CHERRY_PICK
+    val DIRTY: Icon = cherryPicked(ColorIcon(8, 8, 8, 8, Color(0xF4AF3D), false, 8)) // todo: fix color
     val UNKNOWN: Icon = AllIcons.General.Error
     val NOTE: Icon = AllIcons.Actions.Edit
     val NOTE_2: Icon = captioned("2")
@@ -36,7 +35,11 @@ object Icons {
     private fun cherryPicked(badge: Icon): Icon =
         LayeredIcon(2).apply {
             val component = JLabel()
-            setIcon(IconUtil.scale(DvcsImplIcons.CherryPick, component, 0.8f), 0, 6, 6)
+            setIcon(IconUtil.scale(CHERRY_PICK, component, 0.8f), 0, 6, 6)
             setIcon(badge, 1, SwingConstants.NORTH_WEST)
         }
+
+    // known issue: we could simply use DvcsImplIcons.CherryPick but those icons are marked as internal API
+    private fun loadCherryPickIcon() =
+        IconLoader.getIcon("/icons/cherryPick.svg", Icons::class.java)
 }

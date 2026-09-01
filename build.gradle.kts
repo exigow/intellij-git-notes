@@ -7,7 +7,7 @@ plugins {
     id("org.jetbrains.intellij.platform")
 }
 
-version = "1.0.6"
+version = "1.0.7"
 
 repositories {
     mavenCentral()

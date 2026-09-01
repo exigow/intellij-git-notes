@@ -2,8 +2,6 @@ critical bug: CI artifact is broken (?).
 im getting: Fail to load plugin descriptor from file intellij-git-notes-1.0.5.zip.
 workaround: build locally.
 
-critical bug: remove unstable api usage (becaues marketplace rejects 1.0.5 ver).
-
 bug: can't create a new empty note.
 
 task: add e2e test.
@@ -28,3 +26,5 @@ so in theory, we should be able to show versions (content diff?).
 task: when cherry pick could not be verified, include reason.
 
 task: clicking empty space in VCS where notes icons are placed should open "new note" dialog
+
+task: add demo project. it's getting more important over time because monorepo is too heavy and runIde requires reindexing. 
