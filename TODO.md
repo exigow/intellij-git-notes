@@ -26,3 +26,5 @@ task to consider: how note changes over time? all note changes are materialized 
 so in theory, we should be able to show versions (content diff?).
 
 task: when cherry pick could not be verified, include reason.
+
+task: clicking empty space in VCS where notes icons are placed should open "new note" dialog
