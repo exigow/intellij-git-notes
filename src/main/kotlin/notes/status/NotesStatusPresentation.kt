@@ -35,6 +35,7 @@ internal class NotesStatusPresentation(
     override fun clickEnabled(e: InputEvent?) =
         !status.isPending && status.commitId != null && status.topics.orEmpty().isNotEmpty()
 
+    //  todo: clicking on "no notes" (hidden icon) should immediately open "New Note" window
     override fun onClick(e: InputEvent?): Boolean {
         if (status.isPending) return false
         val commitId = status.commitId ?: return false

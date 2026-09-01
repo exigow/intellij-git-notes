@@ -23,11 +23,10 @@ internal class RemergeStatusPresentation(
             CLEAN -> Icons.CLEAN
             DIRTY -> Icons.DIRTY
             UNKNOWN -> Icons.UNKNOWN
-            NOT_CHERRY_PICK -> error("no presentation") // todo really error?
+            NOT_CHERRY_PICK -> error("no presentation") // todo: really error?
         }
 
-    override val text: String
-        get() = status.toString()
+    override val text: String get() = status.text
 
     override fun clickEnabled(e: InputEvent?): Boolean {
         val clickable = outcome == CLEAN

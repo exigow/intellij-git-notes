@@ -13,6 +13,7 @@ import notes.MessageBundle
 import notes.dialog.field.NoteTextField
 import notes.dialog.field.NoteTopicField
 
+// todo: can't create a new empty note (bug!)
 internal class NewNoteDialog(
     project: Project,
     initialTopic: String,
@@ -31,6 +32,7 @@ internal class NewNoteDialog(
         topicValidator.revalidate()
     }
 
+    // todo: add keyboard controls (like Alt+S to save)
     override fun doOKAction() {
         if (onOk?.invoke() != false) super.doOKAction()
     }

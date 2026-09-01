@@ -19,13 +19,23 @@ data class RemergeStatus(
     val originalHash: String? = null,
     val commitId: CommitId? = null,
 ) : VcsCommitExternalStatus {
+    val text: String
+        get() = when (outcome) {
+            SCHEDULED,
+            UPDATING,
+            NOT_CHERRY_PICK -> ""
+            CLEAN -> MessageBundle.message("notes.remergeStatus.clean", shortHash(originalHash!!))
+            DIRTY -> MessageBundle.message("notes.remergeStatus.dirty", shortHash(commitId!!.hash.asString()), shortHash(originalHash!!))
+            UNKNOWN -> MessageBundle.message("notes.remergeStatus.unknown", shortHash(originalHash!!)) // todo: include reason
+        }
+
     override fun toString() = when (outcome) {
         SCHEDULED,
         UPDATING,
         NOT_CHERRY_PICK -> ""
-        CLEAN -> MessageBundle.message("notes.remergeStatus.clean", shortHash(originalHash!!))
-        DIRTY -> MessageBundle.message("notes.remergeStatus.dirty", shortHash(commitId!!.hash.asString()), shortHash(originalHash!!))
-        UNKNOWN -> MessageBundle.message("notes.remergeStatus.unknown", shortHash(originalHash!!))
+        CLEAN,
+        DIRTY,
+        UNKNOWN -> MessageBundle.message("notes.remergeStatus.cherryPickedFrom", originalHash!!)
     }
 
     companion object {
