@@ -1,4 +1,4 @@
-# Development Tips
+Never commit/push unless explicitly asked.
 
 ## IntelliJ Platform SDK
 
@@ -15,3 +15,9 @@ The platform sources are cached and indexed by JetBrains MCP.
 To read those sources, use `search_symbol` with `include_external=true`, then open with `read_file`.
 
 Before considering the task complete, use `lint_files` to check for issues.
+
+## Semantic Versioning
+
+Follow `major.minor.patch` versioning.
+
+Always update the version in the same commit as the changes.
