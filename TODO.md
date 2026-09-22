@@ -13,3 +13,10 @@ task to consider: how note changes over time? all note changes are materialized 
 so in theory, we should be able to show versions (content diff?).
 
 task: add demo project. it's getting more important over time because monorepo is too heavy and runIde requires reindexing. 
+
+task: conflict markers in the remerge diff break syntax highlighting.
+the diff viewer highlights lexer-only, so an unbalanced quote/brace/comment inside one
+conflict section leaks past the marker line and miscolours the rest of the file.
+fix idea: in RemergeMarkerDiffExtension, also call EditorEx.setHighlighter() with a
+SyntaxHighlighter wrapper whose getHighlightingLexer() lexes each conflict section
+independently and emits marker lines as a dedicated token type.

@@ -16,6 +16,7 @@
         <postStartupActivity implementation="notes.NotesCacheInvalidator"/>
         <vcsLogCustomColumn implementation="notes.email.AuthorEmailColumn"/>
         <vcsLogCustomColumn implementation="notes.email.CommitterEmailColumn"/>
+        <diff.DiffExtension implementation="notes.remerge.RemergeMarkerDiffExtension"/>
     </extensions>
     <actions>
         <action id="GitNotes.AddNote" class="notes.action.AddNoteAction">

@@ -70,6 +70,8 @@ private fun showRemergeDiff(project: Project, changes: List<Change>) {
         Messages.showInfoMessage(project, MessageBundle.message("notes.remergeDiff.noDifferences"), MessageBundle.message("notes.remergeDiff"))
         return
     }
-    val producers = changes.mapNotNull { ChangeDiffRequestProducer.create(project, it) }
+    val producers = changes
+        .mapNotNull { ChangeDiffRequestProducer.create(project, it) }
+        .map { RemergeDiffProducer(it) }
     DiffManager.getInstance().showDiff(project, ChangeDiffRequestChain(producers, 0), DiffDialogHints.DEFAULT)
 }
